@@ -16,7 +16,7 @@
 import express from 'express';
 
 const SERVICE     = 'hive-mcp-spire';
-const VERSION     = '1.0.0';
+const VERSION     = '1.0.1';
 const PORT        = process.env.PORT || 3000;
 const ENABLE      = (process.env.ENABLE ?? 'true') !== 'false';
 const BRAND_BLUE  = '#22D3EE';
@@ -36,6 +36,8 @@ const ATOMS = {
 const TOOLS = [
   {
     name: 'sign_mint',
+    title: 'Sign Instance Mint',
+    annotations: { title: 'Sign Instance Mint', readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true },
     description: 'Sign a constitutional agent-instance mint (SPIRE Atom 1). Seals the agent instance binding, its granted authority, and custody terms into one ML-DSA-65 (FIPS 204) attestation envelope — with no-self-attest custody, decaying authority, and non-transferable instance binding. Returns the signed envelope, verifiable offline. Pass a "mint" object: {instance_id, agent_ref, authority, granted_at, decay, custodian_ref}. Build tier (first 1M attestations) free.',
     inputSchema: {
       type: 'object',
@@ -50,6 +52,8 @@ const TOOLS = [
   },
   {
     name: 'sign_trajectory',
+    title: 'Sign Trajectory',
+    annotations: { title: 'Sign Trajectory', readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true },
     description: 'Sign an agent trajectory (SPIRE Atom 2). Seals the ordered causal edges of an agent run into one ML-DSA-65 (FIPS 204) attestation envelope, with a trajectory root kept distinct from the content root, so the exact path the agent took — not just its outputs — is provable after the fact. Returns the signed envelope, verifiable offline. Pass a "trajectory" object: {run_id, agent_ref, edges:[{from, to, seq, cause}]}. Build tier free.',
     inputSchema: {
       type: 'object',
@@ -64,6 +68,8 @@ const TOOLS = [
   },
   {
     name: 'sign_coherence',
+    title: 'Sign Coherence',
+    annotations: { title: 'Sign Coherence', readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true },
     description: 'Sign a coherence attestation (SPIRE Atom 3, the lead claim). Seals an aggregate trajectory-drift measure into one ML-DSA-65 (FIPS 204) attestation envelope. Attests coherence (the agent stayed within its mandate), not correctness — and supports verifier-side correctness-refusal. Returns the signed envelope, verifiable offline. Pass a "coherence" object: {run_id, agent_ref, drift_score, window, mandate_ref}. Build tier free.',
     inputSchema: {
       type: 'object',
@@ -78,6 +84,8 @@ const TOOLS = [
   },
   {
     name: 'verify_attestation',
+    title: 'Verify Attestation',
+    annotations: { title: 'Verify Attestation', readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     description: 'Verify a signed SPIRE attestation offline (always free). Pass the full "attestation" object returned by any sign tool (it carries both the signed envelope and its canonical fragments). Returns {valid, reasons[], scheme, ...}. No secret required — anyone can verify with the published ML-DSA-65 public key. A record a party keeps about itself is a claim; this is the independent proof.',
     inputSchema: {
       type: 'object',
@@ -89,6 +97,8 @@ const TOOLS = [
   },
   {
     name: 'get_pubkey',
+    title: 'Get Public Key',
+    annotations: { title: 'Get Public Key', readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     description: 'Get the Hive typed-signer public key and algorithm metadata for offline verification (free). Returns the ML-DSA-65 (NIST FIPS 204) public key, issuer DID, and spec.',
     inputSchema: { type: 'object', properties: {} },
   },
