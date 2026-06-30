@@ -1,0 +1,44 @@
+{
+  "name": "hive-mcp-spire",
+  "version": "1.0.0",
+  "description": "SPIRE Attestation (AFiR) MCP server. Sign agent-instance mints, trajectories, and coherence with ML-DSA-65 (NIST FIPS 204) — verifiable offline. A record a party keeps about itself is a claim; SPIRE is the independent proof. Patent Pending. Hive Civilization.",
+  "type": "module",
+  "main": "server.js",
+  "bin": {
+    "hive-mcp-spire": "./server.js"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "mcp",
+    "hive",
+    "spire",
+    "afir",
+    "attestation",
+    "agent-provenance",
+    "ml-dsa",
+    "dilithium",
+    "fips-204",
+    "post-quantum",
+    "provenance",
+    "a2a",
+    "agent-to-agent",
+    "ai-agents",
+    "audit"
+  ],
+  "author": "Steve Rotzin <steve@thehiveryiq.com> (https://www.thehiveryiq.com)",
+  "license": "MIT",
+  "homepage": "https://github.com/srotzin/hive-mcp-spire",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/srotzin/hive-mcp-spire"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

@@ -1,0 +1,126 @@
+# Smithery Registry — hive-mcp-spire
+# https://smithery.ai
+
+startCommand:
+  type: http
+  configSchema:
+    type: object
+    properties: {}
+    required: []
+  url: https://hive-mcp-spire.onrender.com/mcp
+
+name: hive-mcp-spire
+displayName: hive-mcp-spire — SPIRE Attestation (AFiR)
+version: "1.0.0"
+description: >
+  SPIRE Attestation (AFiR) for the AI agent economy. Three signing tools —
+  sign_mint, sign_trajectory, sign_coherence — seal an agent-instance mint, a
+  causal trajectory, or a coherence measure into an ML-DSA-65 (NIST FIPS 204)
+  envelope that is verifiable offline. A record a party keeps about itself is a
+  claim; SPIRE is the independent, tamper-evident proof of what an agent actually
+  did. Verify is always free; Build tier (first 1M attestations) free. Patent
+  Pending.
+
+author:
+  name: Steve Rotzin
+  email: steve@thehiveryiq.com
+  url: https://www.thehiveryiq.com
+
+license: MIT
+homepage: https://github.com/srotzin/hive-mcp-spire
+repository:
+  type: git
+  url: https://github.com/srotzin/hive-mcp-spire
+
+transport: streamable-http
+endpoint: https://hive-mcp-spire.onrender.com/mcp
+protocol: "2024-11-05"
+
+categories:
+  - agent-to-agent
+  - inference
+  - observability
+  - provenance
+  - security
+
+tags:
+  - mcp
+  - hive
+  - spire
+  - afir
+  - attestation
+  - ml-dsa
+  - fips-204
+  - post-quantum
+  - provenance
+  - a2a
+  - ai-agents
+  - audit
+
+tools:
+  - name: sign_mint
+    description: >
+      Sign a constitutional agent-instance mint (Atom 1). Seals instance binding,
+      granted authority, and custody terms into one ML-DSA-65 envelope. Pass a
+      "mint" object. Build tier free.
+    inputs:
+      - name: mint
+        type: object
+        required: true
+        description: "{instance_id, agent_ref, authority, granted_at, decay, custodian_ref}"
+  - name: sign_trajectory
+    description: >
+      Sign an agent trajectory (Atom 2). Seals ordered causal edges into one
+      ML-DSA-65 envelope with a trajectory root distinct from the content root.
+      Pass a "trajectory" object. Build tier free.
+    inputs:
+      - name: trajectory
+        type: object
+        required: true
+        description: "{run_id, agent_ref, edges:[{from, to, seq, cause}]}"
+  - name: sign_coherence
+    description: >
+      Sign a coherence attestation (Atom 3, lead claim). Seals aggregate
+      trajectory-drift into one ML-DSA-65 envelope. Attests coherence, not
+      correctness. Pass a "coherence" object. Build tier free.
+    inputs:
+      - name: coherence
+        type: object
+        required: true
+        description: "{run_id, agent_ref, drift_score, window, mandate_ref}"
+  - name: verify_attestation
+    description: >
+      Verify a signed SPIRE attestation offline (always free). Pass the full
+      "attestation" object returned by any sign tool.
+    inputs:
+      - name: attestation
+        type: object
+        required: true
+        description: "{envelope, fragments_canon, ...} as returned by a sign tool"
+  - name: get_pubkey
+    description: >
+      Get the ML-DSA-65 (FIPS 204) public key for offline verification. Free.
+
+runtime:
+  type: node
+  version: ">=18"
+  command: node server.js
+  env:
+    - name: PORT
+      default: "3000"
+      required: false
+    - name: ENABLE
+      default: "true"
+      required: false
+    - name: HIVE_SIGNER_URL
+      default: "https://hive-typed-signer.onrender.com"
+      required: false
+
+brand:
+  color: "#22D3EE"
+  name: "Hive cyan on near-black"
+
+policy:
+  inbound_only: true
+  custody: never
+  role: signing_only
